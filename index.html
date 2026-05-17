@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>高等数学·应用图谱 | 理性美学与产业洞察</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fc;
+            color: #1e293b;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e9eef3;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b9c3d0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8f9eb0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: #eef2ff;
+            border: 1px solid #cbd5e1;
+            border-radius: 100px;
+            padding: 0.3rem 1.1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            margin-bottom: 1rem;
+            color: #2563eb;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e293b 0%, #3b82f6 60%, #2563eb 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #475569;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: #ffffff;
+            border-radius: 2rem;
+            padding: 0.6rem 1.6rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            font-weight: 500;
+            color: #1e293b;
+            white-space: nowrap;
+        }
+        .stat-card i {
+            color: #3b82f6;
+            margin-right: 8px;
+        }
+
+        .chapter-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.7rem;
+            margin: 2.5rem 0 2rem;
+        }
+        .chapter-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem 1.3rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #334155;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            white-space: nowrap;
+        }
+        .chapter-btn:hover, .chapter-btn.active {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+            box-shadow: 0 8px 16px -8px rgba(37,99,235,0.3);
+            transform: translateY(-1px);
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .case-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            padding: 1.4rem;
+            transition: all 0.25s ease;
+            border: 1px solid #e9edf2;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100%;
+        }
+        .case-card:hover {
+            transform: translateY(-4px);
+            border-color: #cbdff2;
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.08);
+            background: #fefefe;
+        }
+        .case-card.highlight {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-top: 1px solid #fcd34d;
+            border-right: 1px solid #fcd34d;
+            border-bottom: 1px solid #fcd34d;
+            position: relative;
+        }
+        .case-card.highlight::after {
+            content: "🌟 经典案例";
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            font-size: 0.65rem;
+            background: #fef3c7;
+            color: #b45309;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .case-card.highlight .case-tag {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .case-domain {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #5b6e8c;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .case-chapter {
+            background: #eef2ff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e40af;
+            white-space: nowrap;
+        }
+        .case-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0.5rem 0 0.8rem;
+            color: #0f172a;
+            line-height: 1.3;
+        }
+        .case-instance {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2563eb;
+            margin-bottom: 1rem;
+        }
+        .case-profession {
+            font-size: 0.85rem;
+            color: #5b6e8c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+        }
+        .case-profession i {
+            font-size: 0.75rem;
+            color: #3b82f6;
+        }
+        .case-tag {
+            font-size: 0.7rem;
+            background: #eef2ff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            width: fit-content;
+            color: #1e40af;
+            white-space: nowrap;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: #ffffff;
+            border-radius: 1.75rem;
+            max-width: 580px;
+            width: 92%;
+            padding: 2.2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.15);
+            transform: scale(0.95);
+            transition: transform 0.25s ease;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .active .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: 0.2s;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover {
+            color: #ef4444;
+        }
+        .modal-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.3;
+        }
+        .modal-detail {
+            margin-top: 0.5rem;
+        }
+        .modal-detail p {
+            margin: 0.9rem 0;
+            line-height: 1.65;
+            color: #334155;
+            font-size: 1rem;
+        }
+        .math-expr {
+            background: #f1f5f9;
+            padding: 1rem 1.2rem;
+            border-radius: 1rem;
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.9rem;
+            border-left: 3px solid #2563eb;
+            margin: 1.2rem 0;
+            color: #0f172a;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.85rem;
+            color: #5b6e8c;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem 1rem 3rem; }
+            .hero h1 { font-size: 2.4rem; }
+            .hero p { font-size: 1.05rem; }
+            .cases-grid { grid-template-columns: 1fr; }
+            .chapter-nav { gap: 0.5rem; }
+            .chapter-btn { font-size: 0.75rem; padding: 0.5rem 1rem; }
+            .stats { gap: 1rem; }
+            .stat-card { padding: 0.5rem 1.2rem; font-size: 0.9rem; }
+            .modal-content { padding: 1.8rem 1.5rem; }
+            .modal-header { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-chalkboard-user"></i> 数学·交叉创新
+        </div>
+        <h1>高等数学 · 应用图谱</h1>
+        <p>从导数至傅里叶级数，每个定理都是工程与商业的底层语言。<br>点击任意案例，探索数学原理与现实应用的深层次对话。</p>
+        <div class="stats">
+            <div class="stat-card"><i class="fas fa-cubes"></i> 9 大模块</div>
+            <div class="stat-card"><i class="fas fa-microchip"></i> 86 个跨界案例</div>
+            <div class="stat-card"><i class="fas fa-rocket"></i> 20+ 学科融合</div>
+        </div>
+    </div>
+
+    <div class="chapter-nav" id="chapterNav"></div>
+    <div id="casesContainer" class="cases-grid"></div>
+
+    <footer>
+        <i class="fas fa-flask"></i> 基于真实产业场景构建 · 每个案例均源自实践需求
+    </footer>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <div class="modal-close" id="modalCloseBtn">&times;</div>
+        <div class="modal-header" id="modalTitle"></div>
+        <div class="modal-detail" id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+    const casesData = [
+        { chapter: "limit", chapterName: "函数·极限·连续", subTopic: "连续复利", instanceName: "银行存款增长模型", profession: "金融学 投资理财", descShort: "利用极限思想推导连续复利公式 A = Pe^{rt}，展示资本无限细分计息时的增长趋势，是金融数学基石。" },
+        { chapter: "limit", chapterName: "函数·极限·连续", subTopic: "渐近线", instanceName: "卫星轨道远地点/近地点分析", profession: "天文学 轨道设计", descShort: "双曲线渐近线分析星际探测器逃逸轨道，预测飞行器最远与最近距离。" },
+        { chapter: "derivative", chapterName: "导数与微分", subTopic: "瞬时速度", instanceName: "车辆测速", profession: "交通工程 智能交通", descShort: "雷达测速基于导数原理 v = ds/dt，精准捕捉车辆瞬间速率。" },
+        { chapter: "derivative", chapterName: "导数与微分", subTopic: "切线斜率", instanceName: "道路坡度设计", profession: "土木工程 道路设计", descShort: "导数即为坡度函数，确保道路最大斜率安全且符合排水需求。" },
+        { chapter: "derivative", chapterName: "导数与微分", subTopic: "相关变化率", instanceName: "气球充气速率", profession: "物理学 实验测量", descShort: "利用相关变化率 dV/dt 与 dr/dt 关系，推导充气时半径变化规律。" },
+        { chapter: "derivative", chapterName: "导数与微分", subTopic: "高阶导数", instanceName: "汽车制动性能测试", profession: "车辆工程 安全测试", descShort: "加速度即速度一阶导数，高阶导数（冲击度）影响刹车舒适性。" },
+        { chapter: "derivative", chapterName: "导数与微分", subTopic: "微分", instanceName: "测量误差修正", profession: "测绘工程 精密测量", descShort: "利用微分近似 Δy≈dy 进行误差传递分析，优化全站仪测距精度。" },
+        { chapter: "derivative", chapterName: "导数与微分", subTopic: "导数的几何意义", instanceName: "道路纵断面设计", profession: "土木工程 路线设计", descShort: "导数确定竖曲线半径，保障行车安全。" },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "洛必达法则", instanceName: "药物浓度变化率", profession: "药学 药代动力学", descShort: "计算半衰期极限浓度比，确定用药频率。" },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "单调性与极值", instanceName: "利润最大化", profession: "经济管理 生产决策", descShort: "边际收益=边际成本时利润最大，利用导数求极值。" },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "凹凸性与拐点", instanceName: "经济增长率转折点", profession: "经济学 宏观经济分析", descShort: "GDP二阶导符号判断经济扩张/收缩拐点。" },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "最值", instanceName: "可乐瓶的优化设计", profession: "管理工程系 市场营销", descShort: "体积固定下，通过求导使材料表面积最小，降低包装成本，兼顾视觉营销。经典极值问题体现成本控制艺术。", highlight: true },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "边际分析", instanceName: "成本与收益的边际效益", profession: "会计学 成本控制", descShort: "导数表示边际函数，指导最优产量与定价。" },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "弹性分析", instanceName: "价格需求弹性", profession: "市场营销 定价策略", descShort: "弹性 Ed = (dQ/dP)*(P/Q)，优化调价幅度。" },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "泰勒公式", instanceName: "非线性近似", profession: "控制工程 系统线性化", descShort: "在工作点附近泰勒展开简化控制器设计。" },
+        { chapter: "derivative_app", chapterName: "导数的应用", subTopic: "最值", instanceName: "易拉罐最优尺寸", profession: "包装工程 工业设计", descShort: "同体积下最小表面积设计，与可乐瓶优化同理。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "不定积分", instanceName: "运动学位移计算", profession: "物理学 直线运动", descShort: "速度积分得位移，逆运算核心。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "曲边梯形面积", instanceName: "土地面积测量", profession: "测绘工程 土地管理", descShort: "定积分计算不规则地块精确面积。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "变力做功", instanceName: "活塞压缩气体", profession: "热力学 发动机设计", descShort: "W = ∫F·dx 计算内燃机压缩冲程功。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "液体压力", instanceName: "水坝受力分析", profession: "水利工程 水工结构", descShort: "压强随深度线性变化，积分得总压力。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "平均值", instanceName: "平均温度计算", profession: "气象学 气候分析", descShort: "连续函数平均值定理用于日均温。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "弧长", instanceName: "道路弯道长度计算", profession: "交通工程 路线设计", descShort: "曲线弧长积分精确预算工程量。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "旋转体体积", instanceName: "容器容积设计", profession: "机械设计 储罐设计", descShort: "圆盘法/壳法求体积优化储罐。" },
+        { chapter: "integral", chapterName: "积分学", subTopic: "旋转体侧面积", instanceName: "保温杯外壳材料用量", profession: "材料工程 轻量化", descShort: "侧面积积分助力计算复合材料用量。" },
+        { chapter: "ode", chapterName: "微分方程", subTopic: "一阶线性", instanceName: "种群增长模型", profession: "生态学 生物多样性", descShort: "马尔萨斯模型 dP/dt = kP，描述种群指数增长。" },
+        { chapter: "ode", chapterName: "微分方程", subTopic: "可分离变量", instanceName: "放射性衰变", profession: "核物理 同位素测年", descShort: "衰变定律 N = N0 e^{-λt}，用于碳14测年。" },
+        { chapter: "ode", chapterName: "微分方程", subTopic: "二阶常系数", instanceName: "弹簧振动系统", profession: "机械工程 减震设计", descShort: "mx'' + cx' + kx = 0 分析阻尼振动特性。" },
+        { chapter: "ode", chapterName: "微分方程", subTopic: "电路暂态", instanceName: "RL暂态过程", profession: "电气工程 电路分析", descShort: "基尔霍夫定律建立一阶电路微分方程，求解电流响应。" },
+        { chapter: "ode", chapterName: "微分方程", subTopic: "SIR模型", instanceName: "传染病传播", profession: "公共卫生 流行病学", descShort: "微分方程组模拟感染峰值与群体免疫。" },
+        { chapter: "multivar", chapterName: "多元微分", subTopic: "偏导数", instanceName: "热传导率计算", profession: "材料科学 热管理", descShort: "傅里叶定律热流与温度梯度偏导关系。" },
+        { chapter: "multivar", chapterName: "多元微分", subTopic: "全微分", instanceName: "误差估计", profession: "测量学 精度分析", descShort: "全微分公式分析多变量误差传播。" },
+        { chapter: "multivar", chapterName: "多元微分", subTopic: "方向导数梯度", instanceName: "温度场中最速升温方向", profession: "气象学 热力分析", descShort: "梯度指向温度上升最快方向。" },
+        { chapter: "multivar", chapterName: "多元微分", subTopic: "无条件极值", instanceName: "薄膜最小表面积", profession: "物理化学 界面科学", descShort: "皂泡曲面极小面积问题，变分法雏形。" },
+        { chapter: "multivar", chapterName: "多元微分", subTopic: "条件极值(拉格朗日)", instanceName: "资源分配最优解", profession: "运筹学 线性规划", descShort: "约束下极值问题，拉格朗日乘数法求解。" },
+        { chapter: "multint", chapterName: "重积分", subTopic: "二重积分面积", instanceName: "不规则地块面积", profession: "地理信息系统 遥感", descShort: "GIS中栅格积分求复杂边界面积。" },
+        { chapter: "multint", chapterName: "重积分", subTopic: "质心", instanceName: "机械零件轻量化", profession: "机械工程学院 机械制造", descShort: "利用二重积分计算异形零件质心，通过拓扑优化移除低应力区材料，确保平衡前提下减重。轻量化设计的核心数学工具。", highlight: true },
+        { chapter: "multint", chapterName: "重积分", subTopic: "转动惯量", instanceName: "飞轮设计", profession: "车辆工程 动力传动", descShort: "I = ∬ r² dm 储能性能优化。" },
+        { chapter: "multint", chapterName: "重积分", subTopic: "引力", instanceName: "天体间引力计算", profession: "天文学 轨道力学", descShort: "三重积分求解不规则星体引力场。" },
+        { chapter: "multint", chapterName: "重积分", subTopic: "三重积分体积", instanceName: "混凝土方量计算", profession: "土木工程 工程造价", descShort: "异形基础体积精确估算。" },
+        { chapter: "multint", chapterName: "重积分", subTopic: "质心(三重)", instanceName: "不规则物体重心", profession: "航空航天 飞行器配平", descShort: "质心位置影响飞行姿态控制。" },
+        { chapter: "multint", chapterName: "重积分", subTopic: "转动惯量(三重)", instanceName: "转子动平衡", profession: "机械工程 旋转机械", descShort: "惯性主轴计算避免振动。" },
+        { chapter: "multint", chapterName: "重积分", subTopic: "二重积分质心", instanceName: "均质钢板重心定位", profession: "机械工程 工艺规划", descShort: "吊装平衡点计算依据质心公式。" },
+        { chapter: "vector", chapterName: "曲线/曲面积分", subTopic: "第一类曲线积分", instanceName: "曲线形构件的质量", profession: "材料力学 线密度分布", descShort: "∫ρ ds 求变密度曲线梁质量。" },
+        { chapter: "vector", chapterName: "曲线/曲面积分", subTopic: "第二类曲线积分", instanceName: "变力沿曲线做功", profession: "物理学 力场", descShort: "∫ F·dr 计算力场总功。" },
+        { chapter: "vector", chapterName: "曲线/曲面积分", subTopic: "格林公式", instanceName: "地图测面积", profession: "地理学 制图", descShort: "使用边界曲线积分算不规则图形面积。" },
+        { chapter: "vector", chapterName: "曲线/曲面积分", subTopic: "第一类曲面积分", instanceName: "曲面薄片质量", profession: "机械工程 壳体设计", descShort: "曲面面密度积分优化薄壳结构。" },
+        { chapter: "vector", chapterName: "曲线/曲面积分", subTopic: "第二类曲面积分", instanceName: "管道流量计算", profession: "流体力学 管道流量", descShort: "通量 ∬ v·dS 求单位时间流量。" },
+        { chapter: "vector", chapterName: "曲线/曲面积分", subTopic: "高斯公式", instanceName: "电磁场通量", profession: "电磁学 场论", descShort: "散度定理联系通量与体积分。" },
+        { chapter: "vector", chapterName: "曲线/曲面积分", subTopic: "斯托克斯公式", instanceName: "流体涡量", profession: "流体力学 涡流分析", descShort: "环量与旋度关系分析涡通量。" },
+        { chapter: "series", chapterName: "无穷级数", subTopic: "等比级数", instanceName: "PageRank算法", profession: "计算机科学 网络爬虫", descShort: "马尔科夫链收敛与特征值。" },
+        { chapter: "series", chapterName: "无穷级数", subTopic: "幂级数", instanceName: "三角函数值计算", profession: "数值分析 计算数学", descShort: "泰勒展开求sin,cos近似值。" },
+        { chapter: "series", chapterName: "无穷级数", subTopic: "泰勒级数", instanceName: "非线性模型线性化", profession: "控制工程 系统辨识", descShort: "围绕工作点线性化。" },
+        { chapter: "series", chapterName: "无穷级数", subTopic: "傅里叶级数", instanceName: "信号频谱分析", profession: "电子信息 通信工程", descShort: "将时域信号分解为频域谐波。" },
+        { chapter: "series", chapterName: "无穷级数", subTopic: "傅里叶变换", instanceName: "图像压缩", profession: "计算机工程 JPEG编码", descShort: "离散余弦变换压缩冗余数据。" }
+    ];
+
+    casesData.forEach(item => {
+        if(item.instanceName.includes("可乐瓶") || item.instanceName.includes("轻量化")) {
+            item.highlight = true;
+        }
+    });
+
+    const chaptersMap = new Map();
+    casesData.forEach(c => {
+        if(!chaptersMap.has(c.chapter)) {
+            chaptersMap.set(c.chapter, { name: c.chapterName, count: 0 });
+        }
+        chaptersMap.get(c.chapter).count++;
+    });
+
+    const navDiv = document.getElementById('chapterNav');
+    const chapterOrder = ["limit","derivative","derivative_app","integral","ode","multivar","multint","vector","series"];
+
+    const allBtn = document.createElement('button');
+    allBtn.className = 'chapter-btn active';
+    allBtn.innerText = `全部 (${casesData.length})`;
+    allBtn.addEventListener('click', () => {
+        document.querySelectorAll('.chapter-btn').forEach(btn => btn.classList.remove('active'));
+        allBtn.classList.add('active');
+        renderCards(casesData);
+    });
+    navDiv.appendChild(allBtn);
+
+    chapterOrder.forEach(key => {
+        if(chaptersMap.has(key)) {
+            const btn = document.createElement('button');
+            btn.className = 'chapter-btn';
+            btn.innerText = `${chaptersMap.get(key).name} (${chaptersMap.get(key).count})`;
+            btn.dataset.chapter = key;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.chapter-btn').forEach(btn => btn.classList.remove('active'));
+                btn.classList.add('active');
+                filterByChapter(key);
+            });
+            navDiv.appendChild(btn);
+        }
+    });
+
+    function filterByChapter(chapterKey) {
+        const filtered = casesData.filter(c => c.chapter === chapterKey);
+        renderCards(filtered);
+        document.getElementById('casesContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderCards(dataArray) {
+        const container = document.getElementById('casesContainer');
+        container.innerHTML = '';
+        if(dataArray.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:3rem;color:#5b6e8c;font-size:1.1rem;">✨ 暂无案例，请切换其他章节 ✨</div>';
+            return;
+        }
+        dataArray.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'case-card';
+            if(item.highlight) card.classList.add('highlight');
+            card.innerHTML = `
+                <div class="case-domain">
+                    <span class="case-chapter">${item.chapterName}</span>
+                    <span class="case-tag">${item.subTopic}</span>
+                </div>
+                <div class="case-title">📐 ${item.instanceName}</div>
+                <div class="case-instance">${item.subTopic}</div>
+                <div class="case-profession"><i class="fas fa-graduation-cap"></i> ${item.profession}</div>
+            `;
+            card.addEventListener('click', () => openModal(item));
+            container.appendChild(card);
+        });
+    }
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+    function openModal(item) {
+        // ==============================================
+        // 👇 关键代码：点击可乐瓶 → 跳转到你的网页
+        // ==============================================
+        if (item.instanceName.includes("可乐瓶")) {
+            window.open("5版 导数的应用——可乐瓶优化设计.html", "_blank");
+            return;
+        }
+
+        let mathHint = '';
+        if(item.instanceName.includes("轻量化")) {
+            mathHint = `<div class="math-expr">⚙️ 质心公式：x̄ = (∬ x·ρ dA)/M，结合应力分析移除低贡献材料，实现轻量化与结构平衡。</div>`;
+        } else if(item.subTopic.includes("梯度")) {
+            mathHint = `<div class="math-expr">∇f 方向导数最大值，热流沿梯度反向流动。</div>`;
+        } else if(item.subTopic.includes("傅里叶")) {
+            mathHint = `<div class="math-expr">🎵 频域分解：f(t)=∑ c_n e^{int}，信号处理核心。</div>`;
+        } else {
+            mathHint = `<div class="math-expr">🧠 数学内核：${item.subTopic} 知识点结合 ${item.profession} 实际场景，实现精准建模与决策。</div>`;
+        }
+
+        modalTitle.innerText = `${item.instanceName}`;
+        modalBody.innerHTML = `
+            <p><strong>所属领域：</strong> ${item.profession}</p>
+            <p><strong>数学分支：</strong> ${item.chapterName} ｜ ${item.subTopic}</p>
+            <p>📖 ${item.descShort}</p>
+            ${mathHint}
+            <p style="margin-top:12px; border-left: 2px solid #3b82f6; padding-left:12px;">🔍 点击外部或关闭按钮，继续探索更多案例。</p>
+        `;
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => {
+        if(e.target === modalOverlay) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') closeModal();
+    });
+
+    renderCards(casesData);
+</script>
+</body>
+</html>

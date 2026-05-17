@@ -1,0 +1,2278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导数的实际应用——可乐背后的数学智慧</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Arial", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        :root {
+            --coke-red: #e4002b;
+            --coke-red-dark: #c20024;
+            --coke-white: #ffffff;
+            --coke-black: #1a1a1a;
+            --coke-gold: #d4af37;
+            --coke-brown: #8b4513;
+            --coke-gray-light: #f5f5f5;
+            --coke-gray: #e0e0e0;
+            --coke-blue: #0072ce;
+            --coke-green: #2e7d32;
+            --coke-purple: #6a1b9a;
+            --shadow-soft: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-hard: 0 6px 16px rgba(0,0,0,0.12);
+            --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-container {
+            width: 100%;
+            background: var(--coke-gray);
+            height: 6px;
+            position: sticky;
+            top: 0;
+            z-index: 101;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--coke-red);
+            width: 14%;
+            transition: width 0.4s ease;
+        }
+
+        header {
+            background: var(--coke-white);
+            border-bottom: 8px solid var(--coke-red);
+            color: var(--coke-black);
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895-2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-60-2-2 .895-2 2 .895-2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-35-2-2 .895-2 2 .895-2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-12-2-2 .895-2 2 .895-2 2 2z' fill='%23e4002b' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            color: var(--coke-red);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            letter-spacing: 0.5px;
+        }
+        
+        header p {
+            font-size: 1rem;
+            color: var(--coke-black);
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav {
+            background: var(--coke-black);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0;
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 6px;
+            z-index: 100;
+        }
+
+        nav .nav-group {
+            display: flex;
+            background: rgba(255,255,255,0.05);
+            border-radius: 0;
+            margin: 0;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav .nav-group:last-child {
+            border-right: none;
+        }
+
+        nav .nav-group-title {
+            color: var(--coke-gold);
+            padding: 14px 12px;
+            font-size: 14px;
+            font-weight: bold;
+            background: rgba(0,0,0,0.4);
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        nav a {
+            color: var(--coke-white);
+            padding: 14px 18px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--coke-gold);
+            transition: var(--transition-base);
+        }
+
+        nav a:hover {
+            background: rgba(228,0,43,0.2);
+            color: var(--coke-white);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active-nav {
+            background: rgba(228,0,43,0.8);
+            color: var(--coke-white);
+        }
+        
+        nav a.active-nav::after {
+            width: 100%;
+            background: var(--coke-white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--coke-white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-base);
+            border-left: 4px solid var(--coke-red);
+            border-top: 1px solid var(--coke-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e4002b'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 16H6c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h12c.55 0 1 .45 1 1v12c0 .55-.45 1-1 1z'/%3E%3Cpath d='M8 14c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v1c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2v-1zm0-4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v1c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2v-1z' opacity='0.2'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            opacity: 0.05;
+            transform: rotate(15deg) translate(20px, -20px);
+            z-index: 0;
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-hard);
+            transform: translateY(-2px);
+        }
+
+        .card h2 {
+            color: var(--coke-black);
+            margin-bottom: 20px;
+            border-left: 5px solid var(--coke-red);
+            padding-left: 15px;
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card h3 {
+            color: var(--coke-black);
+            margin: 25px 0 15px;
+            font-size: 1.3rem;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--coke-gray-light);
+        }
+
+        .katex {
+            font-size: 1.1em !important;
+        }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: var(--coke-white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .param-table th, .param-table td {
+            border: 1px solid #eee;
+            padding: 14px 18px;
+            text-align: left;
+        }
+        .param-table th {
+            background: var(--coke-red);
+            color: var(--coke-white);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        .param-table tr:nth-child(even) {
+            background: var(--coke-gray-light);
+        }
+        
+        .param-table tr:hover {
+            background: #fff5f6;
+            transition: var(--transition-fast);
+        }
+
+        .calc-box {
+            border: 1px solid var(--coke-gray);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            background: var(--coke-white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        input {
+            padding: 10px 15px;
+            width: 120px;
+            margin: 8px;
+            border: 1px solid var(--coke-gray);
+            border-radius: 6px;
+            transition: var(--transition-fast);
+            font-size: 14px;
+            color: var(--coke-black);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--coke-red);
+            box-shadow: 0 0 0 3px rgba(228,0,43,0.1);
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--coke-gray);
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--coke-red);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--coke-red-dark);
+            transform: scale(1.1);
+        }
+
+        button {
+            background: var(--coke-white);
+            color: var(--coke-red);
+            border: 2px solid var(--coke-red);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(228,0,43,0.1);
+            position: relative;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+        
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(228,0,43,0.1), transparent);
+            transition: var(--transition-base);
+        }
+        
+        button:hover {
+            background: var(--coke-red);
+            color: var(--coke-white);
+            box-shadow: 0 4px 10px rgba(228,0,43,0.2);
+            transform: translateY(-2px);
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(228,0,43,0.1);
+        }
+        
+        .prev-btn {
+            background: var(--coke-white);
+            color: var(--coke-blue);
+            border-color: var(--coke-blue);
+        }
+        
+        .prev-btn:hover {
+            background: var(--coke-blue);
+            color: var(--coke-white);
+            box-shadow: 0 4px 10px rgba(0,114,206,0.2);
+        }
+        
+        .next-btn {
+            background: var(--coke-white);
+            color: var(--coke-brown);
+            border-color: var(--coke-brown);
+        }
+        
+        .next-btn:hover {
+            background: var(--coke-brown);
+            color: var(--coke-white);
+            box-shadow: 0 4px 10px rgba(139,69,19,0.2);
+        }
+        
+        .reset-btn {
+            background: var(--coke-white);
+            color: #666;
+            border-color: #999;
+        }
+        .reset-btn:hover {
+            background: #666;
+            color: white;
+        }
+        
+        .disabled-btn {
+            background: var(--coke-gray-light);
+            color: #999;
+            border-color: var(--coke-gray);
+            cursor: not-allowed;
+            opacity: 0.7;
+            transform: none !important;
+        }
+        
+        .disabled-btn:hover {
+            background: var(--coke-gray-light);
+            color: #999;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .disabled-btn::before {
+            display: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+            color: var(--coke-black);
+            padding: 15px;
+            background: var(--coke-gray-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--coke-red);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: var(--coke-black);
+            color: var(--coke-white);
+            margin-top: 40px;
+            border-top: 4px solid var(--coke-red);
+        }
+        
+        footer p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active {
+            display: block;
+        }
+
+        .plot-area {
+            background: var(--coke-white);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--coke-gray);
+        }
+        .slider-container {
+            margin: 25px 0;
+            text-align: center;
+            padding: 15px;
+            background: var(--coke-gray-light);
+            border-radius: 8px;
+        }
+        .slider {
+            width: 80%;
+            margin: 15px auto;
+        }
+        .plot-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 25px;
+        }
+        .chart {
+            flex: 1;
+            min-width: 450px;
+            height: 400px;
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 10px;
+            border: 1px solid var(--coke-gray);
+        }
+        
+        .annotation {
+            position: absolute;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border: 1px solid var(--coke-gold);
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+            color: var(--coke-black);
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 200px;
+            white-space: normal;
+        }
+        
+        .conclusion-box {
+            text-align: center;
+            margin: 25px auto 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid var(--coke-red);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--coke-black);
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(228,0,43,0.1);
+        }
+        
+        .axis {
+            position: absolute;
+            background: #666;
+        }
+        
+        .grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to right, #f0f0f0 1px, transparent 1px),
+                              linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+            background-size: 40px 50px;
+            z-index: 1;
+        }
+        
+        .point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--coke-red);
+            border-radius: 50%;
+            transform: translate(-5px, -5px);
+            z-index: 5;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .dashed-line {
+            position: absolute;
+            border: 1px dashed #999;
+            z-index: 2;
+        }
+        
+        .tick-label {
+            position: absolute;
+            font-size: 11px;
+            color: #666;
+            z-index: 3;
+            font-weight: 500;
+        }
+        
+        .chart-main-title {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--coke-black);
+            background: white;
+            padding: 0 10px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        
+        .plot-divider {
+            margin: 40px 0 25px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--coke-red), transparent);
+            border: none;
+        }
+        
+        .param-opt-card {
+            background: var(--coke-white);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid var(--coke-gray);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .param-opt-card h3 {
+            color: var(--coke-black);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--coke-gray-light);
+        }
+        .param-control {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: var(--coke-gray-light);
+            border-radius: 8px;
+            flex-wrap: wrap;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .param-control .checkbox-wrapper {
+            margin-right: 15px;
+        }
+        .param-control .checkbox-wrapper input {
+            width: auto;
+            margin-right: 8px;
+            accent-color: var(--coke-red);
+        }
+        .param-control label {
+            width: 180px;
+            font-weight: 600;
+            color: var(--coke-black);
+        }
+        .param-control .slider-wrapper {
+            flex: 1;
+            min-width: 200px;
+            margin: 0 15px;
+        }
+        .param-control .slider {
+            width: 100%;
+            margin: 8px 0;
+        }
+        .param-control .value-display {
+            width: 80px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--coke-red);
+            background: #fff5f6;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #fee;
+        }
+        
+        .opt-result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: var(--coke-gray-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--coke-red);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .opt-result-box h4 {
+            color: var(--coke-black);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 2px solid var(--coke-gray-light);
+        }
+        
+        .profit-box {
+            background: var(--coke-gray-light);
+            border-left: 4px solid var(--coke-red);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .profit-title {
+            font-weight: bold;
+            color: var(--coke-red);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .cost-option {
+            margin: 15px 0;
+            padding: 10px;
+            background: #fff5f6;
+            border-radius: 6px;
+            border: 1px solid #fee;
+        }
+        .cost-option input {
+            width: auto;
+            margin-right: 8px;
+            accent-color: var(--coke-red);
+        }
+
+        .answer-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 3px solid var(--coke-blue);
+            border-radius: 6px;
+            display: none;
+        }
+
+        .memory-tip {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border-left: 4px solid var(--coke-gold);
+            padding: 12px 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        /* 课程思政专用样式 */
+        .ideological-card {
+            background: linear-gradient(135deg, #fdfbf5 0%, #f9f5e9 100%);
+            border-left: 5px solid var(--coke-gold);
+            margin: 25px 0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(212,175,55,0.1);
+        }
+        
+        .ideo-title {
+            color: var(--coke-purple);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .ideo-title::before {
+            content: "🏛️";
+            font-size: 1.6rem;
+        }
+        
+        .ideo-content {
+            line-height: 1.8;
+            font-size: 15px;
+            color: #333;
+        }
+        
+        .ideo-point {
+            margin: 12px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .ideo-point::before {
+            content: "★";
+            color: var(--coke-gold);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .green-card {
+            background: linear-gradient(135deg, #f0f9f1 0%, #e6f4e8 100%);
+            border-left: 5px solid var(--coke-green);
+        }
+        
+        .green-card .ideo-title {
+            color: var(--coke-green);
+        }
+        
+        .green-card .ideo-point::before {
+            color: var(--coke-green);
+            content: "♻️";
+        }
+        
+        /* 可视化增强 */
+        .viz-enhance-panel {
+            background: #fff9f9;
+            border: 1px dashed var(--coke-red);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .viz-enhance-title {
+            color: var(--coke-red);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .chart {
+                min-width: 100%;
+                height: 300px;
+            }
+            
+            nav .nav-group {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            nav .nav-group:last-child {
+                border-bottom: none;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .param-control {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .param-control .checkbox-wrapper {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            
+            .param-control label {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .param-control .slider-wrapper {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+</div>
+
+<header>
+    <h1>导数的实际应用——可乐背后的数学智慧</h1>
+    <p>唐山工业职业技术大学 · 张钛文 | 智能体驱动教学 · 循证自学平台 · 课程思政融合</p>
+</header>
+
+<nav>
+    <div class="nav-group">
+        <div class="nav-group-title">基础阶段</div>
+        <a href="#home" onclick="show('home')" class="active-nav">首页</a>
+        <a href="#study" onclick="show('study')">知识学习</a>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">实践阶段</div>
+        <a href="#calc" onclick="show('calc')">AI建模实验室</a>
+        <a href="#plot" onclick="show('plot')">动态图像探究</a>
+        <a href="#practice" onclick="show('practice')">实战练习</a>
+    </div>
+    <div class="nav-group">
+        <div class="nav-group-title">进阶阶段</div>
+        <a href="#expand" onclick="show('expand')">拓展提升</a>
+        <a href="#engineering" onclick="show('engineering')">扩展工程模型</a>
+        <a href="#paramOpt" onclick="show('paramOpt')">参数优化</a>
+        <a href="#ideological" onclick="show('ideological')">课程思政</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div id="home" class="section active">
+        <div class="card">
+            <h2>学习导航</h2>
+            <p>本自学平台围绕《导数的实际应用》展开，通过数学建模与AI仿真，探究可乐罐背后的优化逻辑。</p>
+
+            <br>
+            <h3>一、学习目标</h3>
+            <ul style="margin-left:20px; margin-top:10px; line-height:1.7;">
+                <li>掌握用导数求解圆柱形容器<strong>用料最省、容积最大</strong>问题</li>
+                <li>理解<strong>成本差异</strong>对模型的影响：瓶身成本 : 瓶底成本 = 1 : 1.5</li>
+                <li>建立<strong>利润模型</strong>：利润 = (体积 − 加权表面积) × 0.1 分</li>
+                <li>推导理论最优比例：<strong>h = 3R</strong>（高:半径 = 3:1）</li>
+                <li>对比理论模型与真实易拉罐工程参数的差异</li>
+                <li>自定义参数，完成可乐罐结构的综合优化设计</li>
+                <li>践行<strong>工匠精神、绿色低碳、科技创新</strong>课程思政理念</li>
+            </ul>
+
+            <br>
+            <h3>二、核心模型对比</h3>
+            <ul style="margin-left:20px; margin-top:10px; line-height:1.7;">
+                <li>基础模型（不考虑成本差异）：最优比例 <strong>h = 2R</strong></li>
+                <li>成本优化模型（考虑1:1.5差异）：最优比例 <strong>h = 3R</strong></li>
+                <li>工程实际模型（综合工艺+运输）：比例约 <strong>3.18:1</strong></li>
+            </ul>
+
+            <br>
+            <h3>三、学习路径（按顺序学习）</h3>
+            <ol style="margin-left:20px; margin-top:10px; line-height:1.7; font-weight:bold;">
+                <li>知识学习 → 掌握公式与最优结论</li>
+                <li>AI建模实验室 → 计算最优尺寸与利润</li>
+                <li>动态图像探究 → 直观观察函数极值与导数零点</li>
+                <li>实战练习 → 分层训练，巩固应用</li>
+                <li>拓展提升 → 理解理论与现实差异</li>
+                <li>扩展工程模型 → 学习真实易拉罐结构参数</li>
+                <li>参数优化 → 自定义工程条件，完成综合设计</li>
+                <li>课程思政 → 践行工匠精神与绿色发展</li>
+            </ol>
+
+            <div class="memory-tip">
+                🎯 本节口诀：七步学习走流程，可乐建模很轻松
+            </div>
+
+            <div class="viz-enhance-panel">
+                <div class="viz-enhance-title">📊 可视化增强提示</div>
+                <p>拖动3D可乐罐可360°旋转观察，滑动滑块实时查看函数图像变化，所有计算结果自动同步可视化模型！</p>
+            </div>
+
+            <div class="pagination">
+                <button class="prev-btn disabled-btn" disabled>上一页</button>
+                <button class="next-btn" onclick="show('study')">下一页：知识学习</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="study" class="section">
+        <div class="card">
+            <h2>一、核心知识点</h2>
+            <p>1. 圆柱体积：<span id="formula1"></span></p>
+            <p>2. 圆柱表面积：<span id="formula2"></span></p>
+            <p>3. 加权成本表面积（考虑瓶身/瓶底成本差异1:1.5）：<span id="formula3"></span></p>
+            <p>4. 利润模型：<span id="formula4"></span></p>
+            <p>5. 导数求最值步骤：</p>
+            <ul style="margin-left:20px;">
+                <li>建立函数（利润/体积/表面积）</li>
+                <li>求导 f’(x)</li>
+                <li>令 f’(x)=0，求驻点</li>
+                <li>判断极值 → 即为最值</li>
+            </ul>
+            <br>
+            
+            <h2>二、基础模型（无成本差异）</h2>
+            <p><strong>核心结论</strong>：无论「表面积固定求最大体积」还是「体积固定求最小表面积」，最优解均为 h=2R（高是半径的2倍）</p>
+            <button id="toggleDetailBtn">显示详细过程</button>
+            <div id="detailProcess" style="display:none;">
+                <div class="profit-box">
+                    <div class="profit-title">方案一：表面积固定 → 体积最大（核心目标：最大化容积）</div>
+                    <p><strong>已知条件</strong>：圆柱表面积 S₀ = 2πR² + 2πRh（固定值）</p>
+                    <p><strong>步骤1：建立体积函数（单变量）</strong></p>
+                    <p>由表面积公式变形求 h：h = (S₀ - 2πR²) / (2πR)</p>
+                    <p>代入体积公式：V(R) = πR² × [(S₀ - 2πR²) / (2πR)] = (S₀R - 2πR³) / 2 = (S₀/2)R - πR³</p>
+                    <p><strong>步骤2：对R求导（找极值点）</strong></p>
+                    <p>V’(R) = S₀/2 - 3πR²</p>
+                    <p><strong>步骤3：令导数=0，求最优半径</strong></p>
+                    <p>令 V’(R) = 0 → S₀/2 - 3πR² = 0 → R² = S₀/(6π) → R = √[S₀/(6π)]</p>
+                    <p><strong>步骤4：求最优高h，推导高径比</strong></p>
+                    <p>将R代入h的表达式：h = (S₀ - 2π×S₀/(6π)) / (2π×√[S₀/(6π)]) = (2S₀/3) / (2π×√[S₀/(6π)]) = √[S₀/(6π)] × 2</p>
+                    <p>最终得：h = 2R（高是半径的2倍，高径比2:1）</p>
+                    <p><strong>结论</strong>：表面积固定时，h=2R时体积最大（无成本差异）</p>
+                </div>
+                
+                <div class="profit-box" style="margin-top:15px;">
+                    <div class="profit-title">方案二：体积固定 → 表面积最小（核心目标：最省材料）</div>
+                    <p><strong>已知条件</strong>：圆柱体积 V₀ = πR²h（固定值）</p>
+                    <p><strong>步骤1：建立表面积函数（单变量）</strong></p>
+                    <p>由体积公式变形求 h：h = V₀/(πR²)</p>
+                    <p>代入表面积公式：S(R) = 2πR² + 2πR×[V₀/(πR²)] = 2πR² + 2V₀/R</p>
+                    <p><strong>步骤2：对R求导（找极值点）</strong></p>
+                    <p>S’(R) = 4πR - 2V₀/R²</p>
+                    <p><strong>步骤3：令导数=0，求最优半径</strong></p>
+                    <p>令 S’(R) = 0 → 4πR = 2V₀/R² → 4πR³ = 2V₀ → R³ = V₀/(2π) → R = ∛[V₀/(2π)]</p>
+                    <p><strong>步骤4：求最优高h，推导高径比</strong></p>
+                    <p>将R代入h的表达式：h = V₀/(π×[V₀/(2π)]) = 2∛[V₀/(2π)] = 2R</p>
+                    <p>最终得：h = 2R（高是半径的2倍，高径比2:1）</p>
+                    <p><strong>结论</strong>：体积固定时，h=2R时表面积最小（无成本差异）</p>
+                </div>
+            </div>
+            
+            <h2>三、成本差异优化后计算（瓶身:瓶底=1:1.5）</h2>
+            <div class="profit-box">
+                <div class="profit-title">比例优化过程：</div>
+                <p>✅ 基础模型（无成本差异）：h = 2R（高:半径=2:1）</p>
+                <p>✅ 成本差异优化（加权表面积）：</p>
+                <p>加权表面积 S<sub>加权</sub> = 1.5×2πR² + 1×2πRh = 3πR² + 2πRh</p>
+                <p>按上述相同步骤求导后可得：h = 3R（高:半径=3:1）→ 符合实际可乐罐设计！</p>
+            </div>
+            <p><strong>体积固定 → 加权表面积最小：h = 3R</strong></p>
+            <p><strong>表面积固定 → 体积最大：h = 3R</strong></p>
+            <p>即：考虑成本差异后，圆柱的高 = 3倍底面半径时，利润最大化！</p>
+            
+            <div class="ideological-card green-card">
+                <div class="ideo-title">绿色低碳思政点</div>
+                <div class="ideo-content">
+                    <div class="ideo-point">数学优化设计可减少15%以上的材料浪费，践行<strong>双碳目标</strong>与绿色发展理念</div>
+                    <div class="ideo-point">易拉罐轻量化设计是中国制造业<strong>节能减排</strong>的典型实践</div>
+                    <div class="ideo-point">精准计算、精益求精，体现<strong>工匠精神</strong>在工业设计中的核心价值</div>
+                </div>
+            </div>
+            
+            <div class="memory-tip">
+                🎯 本节口诀：成本一比一点五，最优高三倍半径
+            </div>
+            
+            <div class="pagination">
+                <button class="prev-btn" onclick="show('home')">上一页：首页</button>
+                <button class="next-btn" onclick="show('calc')">下一页：AI建模实验室</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="calc" class="section">
+        <div class="card">
+            <h2>AI建模实验室 - 可乐罐优化计算器</h2>
+            
+            <div class="viz-enhance-panel">
+                <div class="viz-enhance-title">🎯 3D可视化增强</div>
+                <p>计算后自动生成3D可乐罐模型，<strong>鼠标拖动可旋转</strong>，实时展示最优尺寸比例！</p>
+            </div>
+            
+            <div class="cost-option">
+                <input type="checkbox" id="considerCostDiff" checked>
+                <label for="considerCostDiff">考虑成本差异（瓶身:瓶底=1:1.5）| 未勾选则为基础模型（无成本差异）</label>
+            </div>
+            
+            <p>输入体积（如330ml），自动计算最优尺寸与利润：</p>
+            <div class="calc-box">
+                输入体积 V：<input type="number" id="vol" value="330" min="1"> cm³
+                <button onclick="calcBest()">计算最优设计（含利润）</button>
+                <div class="result" id="res"></div>
+            </div>
+
+            <br>
+            <p>输入表面积，自动计算最大体积与利润：</p>
+            <div class="calc-box">
+                输入表面积 S：<input type="number" id="surf" value="600" min="1"> cm²
+                <button onclick="calcMaxVol()">计算最大容积（含利润）</button>
+                <div class="result" id="res2"></div>
+            </div>
+
+            <!-- ================ 高级 3D 可乐罐可视化 ================ -->
+            <div class="card" style="margin-top:25px; border-left: 4px solid #e4002b;">
+                <h3>📦 3D 可乐罐实时预览（最优尺寸）</h3>
+                <div style="width:100%; height:340px; background:#1a1a1a; border-radius:14px; position:relative; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.2);">
+                
+                    <!-- 3D 容器 -->
+                    <div id="can-container" style="position:absolute; left:50%; top:50%; transform-style:preserve-3d; perspective:1000px; cursor:grab;">
+                        <div id="can3d" style="width:100px; height:280px; background:#e4002b; 
+                            border-radius:50px 50px 12px 12px; 
+                            position:relative; transform-origin:center;
+                            transition:all 0.5s ease;
+                            box-shadow:0 0 30px rgba(255,255,255,0.2);">
+                            
+                            <!-- 罐身反光 -->
+                            <div style="position:absolute; right:12%; top:0; width:22%; height:100%; background:rgba(255,255,255,0.15); border-radius:50%;"></div>
+                            
+                            <!-- 顶部银色封边 -->
+                            <div style="position:absolute; top:-3px; left:5%; width:90%; height:12px; background:#d0d0d0; border-radius:50%; box-shadow:0 0 5px #fff;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 信息面板 -->
+                    <div id="can-info" style="position:absolute; bottom:18px; left:18px; font-size:14px; font-weight:bold; color:#fff; background:rgba(0,0,0,0.6); padding:10px 14px; border-radius:10px; backdrop-filter:blur(4px);"></div>
+                </div>
+            </div>
+
+            <div class="ideological-card">
+                <div class="ideo-title">工匠精神思政点</div>
+                <div class="ideo-content">
+                    <div class="ideo-point">AI建模与精准计算，培养<strong>严谨求实、精益求精</strong>的工匠精神</div>
+                    <div class="ideo-point">每0.1mm的优化都能带来巨大效益，体现<strong>细节决定成败</strong>的职业素养</div>
+                    <div class="ideo-point">数学工具赋能工业设计，践行<strong>科技强国</strong>战略</div>
+                </div>
+            </div>
+            
+            <div class="memory-tip">
+                🎯 本节口诀：输入体积与面积，最优尺寸立刻现
+            </div>
+            
+            <div class="pagination">
+                <button class="prev-btn" onclick="show('study')">上一页：知识学习</button>
+                <button class="next-btn" onclick="show('plot')">下一页：动态图像探究</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="plot" class="section">
+        <div class="card">
+            <h2>动态图像探究一：表面积固定 → 体积最大（利润最大化）</h2>
+            
+            <div class="viz-enhance-panel">
+                <div class="viz-enhance-title">📈 动态可视化增强</div>
+                <p>实时绘制<strong>体积函数+导数函数</strong>双图像，极值点自动标注，数学规律直观可见！</p>
+            </div>
+            
+            <p>拖动下方滑块调节表面积参数，实时观察体积函数和导数函数的变化！</p>
+            
+            <div class="plot-area">
+                <div class="slider-container">
+                    <label for="s-slider">表面积 S (cm²)：</label>
+                    <span id="s-value">600</span>
+                    <input type="range" id="s-slider" class="slider" min="200" max="1000" step="10" value="600">
+                </div>
+
+                <div class="plot-container">
+                    <div class="chart" id="volume-chart">
+                        <div class="grid"></div>
+                        <div class="axis" style="left: 60px; top: 20px; bottom: 20px; width: 1px;"></div>
+                        <div class="axis" style="left: 60px; bottom: 20px; right: 20px; height: 1px;"></div>
+                        <div class="chart-main-title">体积函数 V(R)（考虑成本差异）</div>
+                        <div class="tick-label" style="bottom: 5px; right: 10px;">底面半径 R (cm)</div>
+                        <div class="tick-label" style="left: 10px; top: 50%; transform: translateY(-50%) rotate(-90deg);">体积 V (ml)</div>
+                        <canvas id="volume-curve"></canvas>
+                        <div class="annotation" id="volume-annotation"></div>
+                        <div class="point" id="volume-point"></div>
+                        <div class="dashed-line" id="volume-vline"></div>
+                        <div class="dashed-line" id="volume-hline"></div>
+                        <div id="volume-x-ticks"></div>
+                        <div id="volume-y-ticks"></div>
+                    </div>
+
+                    <div class="chart" id="derivative-chart">
+                        <div class="grid"></div>
+                        <div class="axis" style="left: 60px; top: 20px; bottom: 20px; width: 1px;"></div>
+                        <div class="axis" style="left: 60px; bottom: 20px; right: 20px; height: 1px;"></div>
+                        <div class="chart-main-title">体积函数的导数 V'(R)（利润最大化点）</div>
+                        <div class="tick-label" style="bottom: 5px; right: 10px;">底面半径 R (cm)</div>
+                        <div class="tick-label" style="left: 10px; top: 50%; transform: translateY(-50%) rotate(-90deg);">导数值 V'(R)</div>
+                        <canvas id="derivative-curve"></canvas>
+                        <div class="annotation" id="derivative-annotation"></div>
+                        <div class="point" id="derivative-point"></div>
+                        <div class="dashed-line" id="derivative-vline"></div>
+                        <div class="dashed-line" id="derivative-hline"></div>
+                        <div id="derivative-x-ticks"></div>
+                        <div id="derivative-y-ticks"></div>
+                    </div>
+                </div>
+
+                <div class="conclusion-box" id="main-conclusion">
+                    核心结论：考虑成本差异（瓶身:瓶底=1:1.5），当 h/R = 3 时，利润取得最大值
+                </div>
+            </div>
+
+            <hr class="plot-divider">
+            <h2>动态图像探究二：体积固定 → 加权表面积最小（成本最低）</h2>
+            <p>拖动下方滑块调节体积参数，实时观察表面积函数和导数函数的变化！</p>
+            
+            <div class="plot-area">
+                <div class="slider-container">
+                    <label for="v-slider">体积 V (cm³)：</label>
+                    <span id="v-value">330</span>
+                    <input type="range" id="v-slider" class="slider" min="100" max="800" step="10" value="330">
+                </div>
+
+                <div class="plot-container">
+                    <div class="chart" id="surface-chart">
+                        <div class="grid"></div>
+                        <div class="axis" style="left: 60px; top: 20px; bottom: 20px; width: 1px;"></div>
+                        <div class="axis" style="left: 60px; bottom: 20px; right: 20px; height: 1px;"></div>
+                        <div class="chart-main-title">加权表面积函数 S(R)（成本差异1:1.5）</div>
+                        <div class="tick-label" style="bottom: 5px; right: 10px;">底面半径 R (cm)</div>
+                        <div class="tick-label" style="left: 10px; top: 50%; transform: translateY(-50%) rotate(-90deg);">加权表面积 S (cm²)</div>
+                        <canvas id="surface-curve"></canvas>
+                        <div class="annotation" id="surface-annotation"></div>
+                        <div class="point" id="surface-point"></div>
+                        <div class="dashed-line" id="surface-vline"></div>
+                        <div class="dashed-line" id="surface-hline"></div>
+                        <div id="surface-x-ticks"></div>
+                        <div id="surface-y-ticks"></div>
+                    </div>
+
+                    <div class="chart" id="surface-derivative-chart">
+                        <div class="grid"></div>
+                        <div class="axis" style="left: 60px; top: 20px; bottom: 20px; width: 1px;"></div>
+                        <div class="axis" style="left: 60px; bottom: 20px; right: 20px; height: 1px;"></div>
+                        <div class="chart-main-title">加权表面积函数的导数 S'(R)</div>
+                        <div class="tick-label" style="bottom: 5px; right: 10px;">底面半径 R (cm)</div>
+                        <div class="tick-label" style="left: 10px; top: 50%; transform: translateY(-50%) rotate(-90deg);">导数值 S'(R)</div>
+                        <canvas id="surface-derivative-curve"></canvas>
+                        <div class="annotation" id="surface-derivative-annotation"></div>
+                        <div class="point" id="surface-derivative-point"></div>
+                        <div class="dashed-line" id="surface-derivative-vline"></div>
+                        <div class="dashed-line" id="surface-derivative-hline"></div>
+                        <div id="surface-derivative-x-ticks"></div>
+                        <div id="surface-derivative-y-ticks"></div>
+                    </div>
+                </div>
+
+                <div class="conclusion-box" id="surface-conclusion">
+                    核心结论：考虑成本差异（瓶身:瓶底=1:1.5），当 h/R = 3 时，成本最低（加权表面积最小）
+                </div>
+
+                <div class="ideological-card green-card">
+                    <div class="ideo-title">科技创新与绿色发展</div>
+                    <div class="ideo-content">
+                        <div class="ideo-point">动态可视化技术让抽象数学变直观，体现<strong>数字赋能教育</strong>的创新理念</div>
+                        <div class="ideo-point">最小表面积设计=最少材料消耗，直接服务<strong>国家双碳战略</strong></div>
+                        <div class="ideo-point">数学优化是实现<strong>绿色制造、低碳生产</strong>的核心工具</div>
+                    </div>
+                </div>
+
+                <div class="memory-tip">
+                    🎯 本节口诀：导数为零是极值，利润最大在此处
+                </div>
+                
+                <div class="pagination">
+                    <button class="prev-btn" onclick="show('calc')">上一页：AI建模实验室</button>
+                    <button class="next-btn" onclick="show('practice')">下一页：实战练习</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="practice" class="section">
+        <div class="card">
+            <h2>分层练习</h2>
+            <p><strong>基础题</strong></p>
+            <p>1. 一个圆柱体积为500cm³，考虑瓶身/瓶底成本1:1.5，求用料最省时的底面半径和高。</p>
+            <button onclick="toggleAnswer(1)">显示答案</button>
+            <div id="answer1" class="answer-box">
+                <strong>参考答案：</strong><br>
+                R = ∛(500/(3π)) ≈ 3.75 cm<br>
+                h = 3R ≈ 11.25 cm
+            </div>
+            
+            <p style="margin-top:15px;">2. 圆柱表面积固定400cm²，考虑成本差异，求最大容积和对应利润。</p>
+            <button onclick="toggleAnswer(2)">显示答案</button>
+            <div id="answer2" class="answer-box">
+                <strong>参考答案：</strong><br>
+                R = √(400/(8π)) ≈ 3.99 cm<br>
+                h = 3R ≈ 11.97 cm<br>
+                V ≈ π×(3.99)²×11.97 ≈ 598 cm³
+            </div>
+            
+            <br>
+            <p><strong>实践题</strong></p>
+            <p>测量身边的饮料罐，计算高径比 h/R，是否接近3？对比理论值分析差异原因。</p>
+            <button onclick="toggleAnswer(3)">显示答案</button>
+            <div id="answer3" class="answer-box">
+                <strong>参考答案：</strong><br>
+                真实可乐罐高径比≈3.18，略大于理论值3，原因：<br>
+                1. 罐底/罐盖更厚，成本比略大于1.5<br>
+                2. 握持手感、装箱稳定性要求<br>
+                3. 生产工艺限制
+            </div>
+            
+            <br>
+            <p><strong>拓展题</strong></p>
+            <p>无盖圆柱，体积固定，考虑底部成本是侧面1.5倍，如何设计最省材料？</p>
+            <button onclick="toggleAnswer(4)">显示答案</button>
+            <div id="answer4" class="answer-box">
+                <strong>参考答案：</strong><br>
+                加权表面积 S = 1.5πR² + 2πRh<br>
+                求导后得最优比例：h = 0.75R
+            </div>
+
+            <div class="ideological-card">
+                <div class="ideo-title">实践育人思政点</div>
+                <div class="ideo-content">
+                    <div class="ideo-point">理论联系实际，培养<strong>学以致用、知行合一</strong>的学习品质</div>
+                    <div class="ideo-point">动手测量、严谨计算，锤炼<strong>精益求精</strong>的职业素养</div>
+                    <div class="ideo-point">从数学优化到工业实践，树立<strong>技能报国、服务社会</strong>的理想信念</div>
+                </div>
+            </div>
+
+            <div class="memory-tip">
+                🎯 本节口诀：做题先找最优比，导数为零是依据
+            </div>
+            
+            <div class="pagination">
+                <button class="prev-btn" onclick="show('plot')">上一页：动态图像探究</button>
+                <button class="next-btn" onclick="show('expand')">下一页：拓展提升</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="expand" class="section">
+        <div class="card">
+            <h2>模型优化：为什么真实可乐罐不完全符合 h=3R？</h2>
+            <ul style="margin-left:20px;">
+                <li>瓶底、瓶盖厚度不同（成本差异进一步放大）</li>
+                <li>人体工学握持（高径比需兼顾手感）</li>
+                <li>装箱、运输稳定性（高径比过大会增加破损率）</li>
+                <li>生产工艺限制（模具标准化、成型难度）</li>
+                <li>市场消费习惯（视觉审美、便携性）</li>
+            </ul>
+            <br>
+            <div class="profit-box">
+                <div class="profit-title">利润模型总结：</div>
+                <p>1. 基础模型（无成本差异）：利润 = (V - S) × 0.1 → 最优比 2:1</p>
+                <p>2. 成本优化模型（瓶身:瓶底=1:1.5）：利润 = (V - (1.5×2πR² + 1×2πRh)) × 0.1 → 最优比 3:1</p>
+                <p>3. 工程落地：3.18:1（综合工艺、运输、成本后的实际最优解）</p>
+            </div>
+            <h2>数学思想总结</h2>
+            <p>实际问题 → 基础数学建模 → 引入成本差异优化 → 导数求解 → 工程约束调整 → 解释现实</p>
+            <p>这就是核心的：<strong>循证探究 + 数学建模 + 工程优化</strong></p>
+
+            <div class="ideological-card green-card">
+                <div class="ideo-title">大国工匠与绿色制造</div>
+                <div class="ideo-content">
+                    <div class="ideo-point">中国易拉罐制造技术世界领先，彰显<strong>中国制造、中国精度</strong>的实力</div>
+                    <div class="ideo-point">从数学最优到工程最优，体现<strong>创新驱动、质量为先</strong>的新发展理念</div>
+                    <div class="ideo-point">轻量化、减量化设计，持续为<strong>碳达峰、碳中和</strong>贡献力量</div>
+                </div>
+            </div>
+
+            <div class="memory-tip">
+                🎯 本节口诀：理论最优三比一，工程微调更合理
+            </div>
+            
+            <div class="pagination">
+                <button class="prev-btn" onclick="show('practice')">上一页：实战练习</button>
+                <button class="next-btn" onclick="show('engineering')">下一页：扩展工程模型</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="engineering" class="section">
+        <div class="card">
+            <h2>可口可乐易拉罐设计参数汇总</h2>
+            
+            <h3>一、基本信息</h3>
+            <table class="param-table">
+                <tr>
+                    <th>参数名称</th>
+                    <th>标准值（330ml罐）</th>
+                    <th>备注</th>
+                </tr>
+                <tr>
+                    <td>公称容积</td>
+                    <td>330 mL</td>
+                    <td>实际灌装量330±5mL</td>
+                </tr>
+                <tr>
+                    <td>罐体总高度</td>
+                    <td>115.2 mm</td>
+                    <td>含盖，不含拉环</td>
+                </tr>
+                <tr>
+                    <td>罐身直径</td>
+                    <td>66.0 mm</td>
+                    <td>标准202直径罐</td>
+                </tr>
+                <tr>
+                    <td>罐身净高</td>
+                    <td>105.0 mm</td>
+                    <td>不含盖和底</td>
+                </tr>
+                <tr>
+                    <td>高径比（h/R）</td>
+                    <td>3.18</td>
+                    <td>偏离理论最优值3，工程优化结果（成本+工艺+运输）</td>
+                </tr>
+                <tr>
+                    <td>空罐重量</td>
+                    <td>约14.5 g</td>
+                    <td>铝制易拉罐标准重量</td>
+                </tr>
+            </table>
+
+            <h3>二、整体储存规格</h3>
+            <table class="param-table">
+                <tr>
+                    <th>规格类型</th>
+                    <th>参数值</th>
+                    <th>应用场景</th>
+                </tr>
+                <tr>
+                    <td>单箱装箱数量</td>
+                    <td>24罐/箱</td>
+                    <td>标准零售包装</td>
+                </tr>
+                <tr>
+                    <td>外箱尺寸</td>
+                    <td>355×265×185 mm</td>
+                    <td>24罐装瓦楞纸箱</td>
+                </tr>
+                <tr>
+                    <td>堆码层数</td>
+                    <td>≤8层</td>
+                    <td>常温仓储条件</td>
+                </tr>
+                <tr>
+                    <td>仓储温湿度</td>
+                    <td>0-25℃，≤75%RH</td>
+                    <td>避免罐体变形</td>
+                </tr>
+                <tr>
+                    <td>耐压强度</td>
+                    <td>≥600 kPa</td>
+                    <td>承受碳酸饮料内压</td>
+                </tr>
+            </table>
+
+            <h3>三、各部位厚度参数（成本差异核心）</h3>
+            <table class="param-table">
+                <tr>
+                    <th>部位名称</th>
+                    <th>厚度（mm）</th>
+                    <th>材质</th>
+                    <th>成本系数（相对瓶身）</th>
+                    <th>设计原因</th>
+                </tr>
+                <tr>
+                    <td>罐身主体</td>
+                    <td>0.100-0.110</td>
+                    <td>3004铝合金</td>
+                    <td>1.0</td>
+                    <td>兼顾强度与轻量化</td>
+                </tr>
+                <tr>
+                    <td>罐盖（易撕盖）</td>
+                    <td>0.280-0.300</td>
+                    <td>5182铝合金</td>
+                    <td>1.8</td>
+                    <td>需承受开启力，强度要求高</td>
+                </tr>
+                <tr>
+                    <td>罐底（凸面）</td>
+                    <td>0.180-0.200</td>
+                    <td>3004铝合金</td>
+                    <td>1.5</td>
+                    <td>承受内压和堆码压力（匹配理论成本比）</td>
+                </tr>
+                <tr>
+                    <td>罐肩（过渡区）</td>
+                    <td>0.120-0.130</td>
+                    <td>3004铝合金</td>
+                    <td>1.2</td>
+                    <td>应力集中区，加厚增强</td>
+                </tr>
+                <tr>
+                    <td>卷边部位</td>
+                    <td>0.350-0.400</td>
+                    <td>复合层</td>
+                    <td>2.0</td>
+                    <td>密封要求，多层卷边</td>
+                </tr>
+            </table>
+
+            <h3>四、结构设计特点分析</h3>
+            <ul style="margin-left:20px; margin-top:10px;">
+                <li><strong>非等厚设计</strong>：罐身薄、盖底厚，成本系数1:1.5，完美匹配数学模型的成本差异假设，是利润最大化的核心设计。</li>
+                <li><strong>凸形罐底</strong>：采用球面凸底结构，将内压转化为环向应力，大幅提升耐压能力，相比平底可减少30%以上的材料使用。</li>
+                <li><strong>渐变罐肩</strong>：罐身到罐口的锥形过渡设计，既满足握持手感，又分散灌装、运输过程中的应力集中。</li>
+                <li><strong>标准化直径</strong>：66mm直径是综合考虑人体握持尺寸、装箱效率、生产线兼容性的最优选择。</li>
+                <li><strong>高径比优化</strong>：3.18的高径比虽偏离数学最优值3，但结合仓储堆码、运输成本、消费习惯等工程因素，是全生命周期成本最低的选择。</li>
+                <li><strong>材料选型</strong>：3004铝合金（罐身）兼顾成形性和耐腐蚀性，5182铝合金（罐盖）具备良好的撕裂性能，实现功能分区优化。</li>
+            </ul>
+            
+            <div class="ideological-card">
+                <div class="ideo-title">科技强国与工匠精神</div>
+                <div class="ideo-content">
+                    <div class="ideo-point">我国易拉罐材料、工艺、装备全面自主可控，彰显<strong>科技自立自强</strong>国家战略</div>
+                    <div class="ideo-point">微米级精度控制，诠释<strong>执着专注、精益求精、追求卓越</strong>的大国工匠精神</div>
+                    <div class="ideo-point">从数学建模到工业量产，培养<strong>服务制造强国</strong>的时代新人</div>
+                </div>
+            </div>
+            
+            <div class="conclusion-box" style="margin-top:20px;">
+                工程启示：数学最优解（3:1）需结合实际工程约束（材料成本1:1.5、工艺、运输、使用场景）进行微调（3.18:1），这是理论到实践的核心转化逻辑
+            </div>
+
+            <div class="memory-tip">
+                🎯 本节口诀：工程参数全看透，成本工艺全都有
+            </div>
+            
+            <div class="pagination">
+                <button class="prev-btn" onclick="show('expand')">上一页：拓展提升</button>
+                <button class="next-btn" onclick="show('paramOpt')">下一页：参数优化</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="paramOpt" class="section">
+        <div class="card">
+            <h2>可乐罐工程参数优化（含成本差异）</h2>
+            <p>自定义调节以下工程参数，实时查看优化后的设计方案（基于利润模型：利润=(V-加权S)×0.1）！</p>
+            
+            <div class="param-opt-card">
+                <h3>工程参数调节（勾选表示启用该参数影响）</h3>
+                
+                <div class="param-control">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="opt-thickness" checked>
+                        <label for="opt-thickness">启用顶底厚度差异（成本比1:1.5）</label>
+                    </div>
+                    <label for="thickness-ratio">顶底厚度差异比：</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="thickness-ratio" class="slider" min="1" max="5" step="0.1" value="1.5">
+                    </div>
+                    <div class="value-display" id="thickness-ratio-val">1.5</div>
+                    <span>（盖底厚度/罐身厚度）</span>
+                </div>
+                
+                <div class="param-control">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="opt-bottom" checked>
+                        <label for="opt-bottom">启用底部拱形结构影响</label>
+                    </div>
+                    <label for="bottom-arch">底部拱形高度：</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="bottom-arch" class="slider" min="1" max="10" step="0.5" value="5">
+                    </div>
+                    <div class="value-display" id="bottom-arch-val">5</div>
+                    <span>mm</span>
+                </div>
+                
+                <div class="param-control">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="opt-ring" checked>
+                        <label for="opt-ring">启用拉环结构影响</label>
+                    </div>
+                    <label for="ring-size">拉环占用面积：</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="ring-size" class="slider" min="50" max="200" step="5" value="120">
+                    </div>
+                    <div class="value-display" id="ring-size-val">120</div>
+                    <span>mm²</span>
+                </div>
+                
+                <div class="param-control">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="opt-volume" checked>
+                        <label for="opt-volume">启用固定容量约束</label>
+                    </div>
+                    <label for="fixed-volume">固定容量：</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="fixed-volume" class="slider" min="200" max="500" step="10" value="330">
+                    </div>
+                    <div class="value-display" id="fixed-volume-val">330</div>
+                    <span>ml</span>
+                </div>
+                
+                <div class="param-control">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="opt-cost" checked>
+                        <label for="opt-cost">启用成本权重（利润优先）</label>
+                    </div>
+                    <label for="cost-weight">成本权重：</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="cost-weight" class="slider" min="0.1" max="1" step="0.05" value="0.7">
+                    </div>
+                    <div class="value-display" id="cost-weight-val">0.7</div>
+                    <span>（1为最优先考虑利润）</span>
+                </div>
+                
+                <div class="param-control">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="opt-transport" checked>
+                        <label for="opt-transport">启用运输安全余量</label>
+                    </div>
+                    <label for="transport-safety">运输安全余量：</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="transport-safety" class="slider" min="0" max="0.3" step="0.01" value="0.15">
+                    </div>
+                    <div class="value-display" id="transport-safety-val">0.15</div>
+                    <span>（额外增加的材料比例）</span>
+                </div>
+                
+                <div style="display:flex; gap:10px; margin-top:15px;">
+                    <button onclick="calculateOptimalDesign()">计算优化设计方案（含利润）</button>
+                    <button class="reset-btn" onclick="resetAllParams()">一键重置所有参数</button>
+                </div>
+            </div>
+            
+            <div class="opt-result-box" id="opt-result">
+                <h4>优化设计结果（请点击上方按钮计算）</h4>
+                <p id="result-content">
+                    • 优化后高径比：--<br>
+                    • 预估材料使用量：--<br>
+                    • 预估生产成本：--<br>
+                    • 预估单罐利润：-- 分<br>
+                    • 结构强度评分：--<br>
+                    • 综合优化建议：--
+                </p>
+            </div>
+
+            <div class="ideological-card green-card">
+                <div class="ideo-title">创新设计与绿色使命</div>
+                <div class="ideo-content">
+                    <div class="ideo-point">自主设计最优方案，培养<strong>创新意识、工程思维、社会责任感</strong></div>
+                    <div class="ideo-point">平衡利润与环保，树立<strong>绿色发展、可持续发展</strong>理念</div>
+                    <div class="ideo-point">用数学知识解决工业难题，立志成为<strong>担当民族复兴大任</strong>的时代新人</div>
+                </div>
+            </div>
+
+            <div class="memory-tip">
+                🎯 本节口诀：参数自由来组合，最优设计自己做
+            </div>
+            
+            <div class="pagination">
+                <button class="prev-btn" onclick="show('engineering')">上一页：扩展工程模型</button>
+                <button class="next-btn" onclick="show('ideological')">下一页：课程思政</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增：课程思政专属页面 -->
+    <div id="ideological" class="section">
+        <div class="card">
+            <h2>🏛️ 课程思政融合专区 —— 从数学智慧到家国担当</h2>
+            
+            <div class="ideological-card">
+                <div class="ideo-title">一、工匠精神：精益求精的职业追求</div>
+                <div class="ideo-content">
+                    <div class="ideo-point"><strong>执着专注</strong>：导数求极值需要严谨计算，如同大国工匠对精度的极致追求</div>
+                    <div class="ideo-point"><strong>精益求精</strong>：易拉罐从3:1到3.18的微调，体现细节优化、追求卓越的精神</div>
+                    <div class="ideo-point"><strong>一丝不苟</strong>：数学建模的每一个参数，都是职业素养的真实写照</div>
+                    <div class="ideo-point"><strong>技能报国</strong>：用数学知识优化工业生产，以专业技能服务国家建设</div>
+                </div>
+            </div>
+            
+            <div class="ideological-card green-card">
+                <div class="ideo-title">二、绿色低碳：服务国家双碳战略</div>
+                <div class="ideo-content">
+                    <div class="ideo-point"><strong>节能减排</strong>：优化设计减少15%材料消耗，年节约万吨铝材，降低碳排放</div>
+                    <div class="ideo-point"><strong>循环利用</strong>：铝合金易拉罐100%可回收，践行绿色循环经济理念</div>
+                    <div class="ideo-point"><strong>低碳生产</strong>：数学优化是实现制造业节能降碳的核心工具</div>
+                    <div class="ideo-point"><strong>生态优先</strong>：树立绿水青山就是金山银山的发展理念</div>
+                </div>
+            </div>
+            
+            <div class="ideological-card">
+                <div class="ideo-title">三、科技创新：科技自立自强的中国力量</div>
+                <div class="ideo-content">
+                    <div class="ideo-point"><strong>自主创新</strong>：中国易拉罐制造技术实现全产业链自主可控</div>
+                    <div class="ideo-point"><strong>数字赋能</strong>：AI建模、动态可视化，数字技术赋能传统制造业升级</div>
+                    <div class="ideo-point"><strong>制造强国</strong>：微小的易拉罐，是中国制造走向中国创造的缩影</div>
+                    <div class="ideo-point"><strong>青年使命</strong>：学好数学知识，练就过硬本领，投身强国伟业</div>
+                </div>
+            </div>
+            
+            <div class="ideological-card green-card">
+                <div class="ideo-title">四、知行合一：理论联系实际的实践育人</div>
+                <div class="ideo-content">
+                    <div class="ideo-point"><strong>学以致用</strong>：从课本导数公式到工业优化设计，知识转化为生产力</div>
+                    <div class="ideo-point"><strong>严谨求实</strong>：科学计算、精准建模，培养科学精神与科学态度</div>
+                    <div class="ideo-point"><strong>服务社会</strong>：优化设计降低成本、节约资源，直接服务社会发展</div>
+                    <div class="ideo-point"><strong>价值引领</strong>：塑造正确的世界观、人生观、价值观，厚植家国情怀</div>
+                </div>
+            </div>
+            
+            <div class="conclusion-box" style="margin-top:30px; font-size:16px; padding:15px 25px;">
+                ✨ 课程思政总结：以数学之智，践绿色之行，承工匠之心，强强国之技
+            </div>
+            
+            <div class="memory-tip">
+                🎯 思政口诀：学数学强本领，守初心担使命，精技能报国行
+            </div>
+            
+            <div class="pagination">
+                <button class="prev-btn" onclick="show('paramOpt')">上一页：参数优化</button>
+                <button class="next-btn disabled-btn" disabled>课程学习完成</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>智能体驱动教学创新 循证教研赋能课堂变革 | 课程思政融合示范课件 © 2026 高等数学自学平台</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+<script>
+    // 进度条
+    const progressBar = document.getElementById('progress-bar');
+    const totalPages = 8;
+    
+    function updateProgress(pageId) {
+        const pages = ['home','study','calc','plot','practice','expand','engineering','paramOpt','ideological'];
+        const index = pages.indexOf(pageId);
+        const percent = ((index) / (totalPages)) * 100;
+        progressBar.style.width = percent + '%';
+    }
+
+    // 页面切换
+    function show(id) {
+        document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        
+        document.querySelectorAll('nav a').forEach(link => {
+            link.classList.remove('active-nav');
+            if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active-nav');
+            }
+        });
+
+        updateProgress(id);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ====================== 高级 3D 可乐罐自动更新 ======================
+    function updateCan3D(R, h) {
+        const can = document.getElementById('can3d');
+        const info = document.getElementById('can-info');
+        const container = document.getElementById('can-container');
+
+        let scale = 14;
+        let w = R * scale;
+        let hgt = h * scale;
+
+        w = Math.max(66, w);
+        hgt = Math.max(150, hgt);
+
+        let r = w / 2;
+
+        can.style.width = w + "px";
+        can.style.height = hgt + "px";
+        can.style.borderRadius = `${r}px ${r}px 14px 14px`;
+
+        let ratio = (h / R).toFixed(2);
+        info.innerHTML = `
+            半径 R = ${R.toFixed(2)} cm<br>
+            高度 h = ${h.toFixed(2)} cm<br>
+            高径比 h/R = ${ratio}
+        `;
+    }
+
+    // ====================== 3D 可乐罐鼠标拖动旋转 ======================
+    let isDragging = false;
+    let startX = 0;
+    let rotateY = 0;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const canContainer = document.getElementById("can-container");
+        const can3d = document.getElementById("can3d");
+        if(canContainer && can3d){
+            canContainer.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                canContainer.style.cursor = "grabbing";
+            });
+
+            document.addEventListener("mousemove", (e) => {
+                if (!isDragging) return;
+                let dx = e.clientX - startX;
+                rotateY += dx * 0.4;
+                startX = e.clientX;
+                can3d.style.transform = `rotateY(${rotateY}deg)`;
+            });
+
+            document.addEventListener("mouseup", () => {
+                isDragging = false;
+                if(canContainer) canContainer.style.cursor = "grab";
+            });
+        }
+    });
+
+    // 计算最优设计
+    function calcBest() {
+        let V = parseFloat(document.getElementById('vol').value);
+        if (V <= 0) { alert("请输入正数！"); return; }
+        
+        const considerCost = document.getElementById('considerCostDiff').checked;
+        
+        let R, h, ratioDesc, ratioValue;
+        if (considerCost) {
+            R = Math.cbrt(V / (3 * Math.PI));
+            h = 3 * R;
+            ratioDesc = "3:1（成本优化）";
+            ratioValue = 3;
+        } else {
+            R = Math.cbrt(V / (2 * Math.PI));
+            h = 2 * R;
+            ratioDesc = "2:1（基础模型）";
+            ratioValue = 2;
+        }
+        
+        let S = 2 * Math.PI * R * R + 2 * Math.PI * R * h;
+        let S_weighted = considerCost 
+            ? 1.5 * 2 * Math.PI * R * R + 1 * 2 * Math.PI * R * h 
+            : S;
+        
+        let profit = (V - S_weighted) * 0.1;
+        
+        document.getElementById('res').innerHTML =
+            `✅ 最优设计（${considerCost ? '考虑成本差异1:1.5' : '基础模型无成本差异'}）：<br>
+            底面半径 R = ${R.toFixed(2)} cm<br>
+            高 h = ${h.toFixed(2)} cm<br>
+            普通表面积 S = ${S.toFixed(2)} cm²<br>
+            加权表面积 S<sub>加权</sub> = ${S_weighted.toFixed(2)} cm²<br>
+            单罐利润 = ${profit.toFixed(2)} 分<br>
+            满足 h ≈ ${ratioValue}R（${ratioDesc}，利润最大化）`;
+        
+        document.getElementById('res').scrollIntoView({ behavior: 'smooth' });
+        
+        // 自动更新3D可乐罐
+        updateCan3D(R, h);
+    }
+
+    // 计算最大体积
+    function calcMaxVol() {
+        let S0 = parseFloat(document.getElementById('surf').value);
+        if (S0 <= 0) { alert("请输入正数！"); return; }
+        
+        const considerCost = document.getElementById('considerCostDiff').checked;
+        
+        let R, h, ratioDesc, ratioValue;
+        if (considerCost) {
+            R = Math.sqrt(S0 / (8 * Math.PI));
+            h = 3 * R;
+            ratioDesc = "3:1（成本优化）";
+            ratioValue = 3;
+        } else {
+            R = Math.sqrt(S0 / (6 * Math.PI));
+            h = 2 * R;
+            ratioDesc = "2:1（基础模型）";
+            ratioValue = 2;
+        }
+        
+        let V = Math.PI * R * R * h;
+        let S_weighted = considerCost 
+            ? 1.5 * 2 * Math.PI * R * R + 1 * 2 * Math.PI * R * h 
+            : 2 * Math.PI * R * R + 2 * Math.PI * R * h;
+        
+        let profit = (V - S_weighted) * 0.1;
+        
+        document.getElementById('res2').innerHTML =
+            `✅ 最大容积（${considerCost ? '考虑成本差异1:1.5' : '基础模型无成本差异'}）：<br>
+            底面半径 R = ${R.toFixed(2)} cm<br>
+            高 h = ${h.toFixed(2)} cm<br>
+            最大体积 V = ${V.toFixed(2)} cm³<br>
+            加权表面积 S<sub>加权</sub> = ${S_weighted.toFixed(2)} cm²<br>
+            单罐利润 = ${profit.toFixed(2)} 分<br>
+            满足 h ≈ ${ratioValue}R（${ratioDesc}，利润最大化）`;
+        
+        document.getElementById('res2').scrollIntoView({ behavior: 'smooth' });
+        
+        // 自动更新3D可乐罐
+        updateCan3D(R, h);
+    }
+
+    const pi = Math.PI;
+    const sSlider = document.getElementById('s-slider');
+    const sValue = document.getElementById('s-value');
+    
+    updatePlot(600);
+    updateSurfacePlot(330);
+    
+    sSlider.addEventListener('input', function() {
+        const S = parseInt(this.value);
+        sValue.textContent = S;
+        updatePlot(S);
+    });
+
+    const vSlider = document.getElementById('v-slider');
+    const vValue = document.getElementById('v-value');
+    vSlider.addEventListener('input', function() {
+        const V = parseInt(this.value);
+        vValue.textContent = V;
+        updateSurfacePlot(V);
+    });
+
+    // 窗口自适应
+    window.addEventListener('resize', () => {
+        updatePlot(document.getElementById('s-slider').value);
+        updateSurfacePlot(document.getElementById('v-slider').value);
+    });
+
+    function V(R, S0) {
+        return (S0 / 2) * R - pi * Math.pow(R, 3);
+    }
+
+    function dV(R, S0) {
+        return (S0 / 2) - 3 * pi * Math.pow(R, 2);
+    }
+
+    function R_opt(S0) {
+        return Math.sqrt(S0 / (8 * pi));
+    }
+
+    function h_opt(S0) {
+        return 3 * R_opt(S0);
+    }
+
+    function S(R, V0) {
+        return 1.5 * 2 * pi * Math.pow(R, 2) + (2 * V0) / R;
+    }
+
+    function dS(R, V0) {
+        return 1.5 * 4 * pi * R - (2 * V0) / Math.pow(R, 2);
+    }
+
+    function R_surf_opt(V0) {
+        return Math.cbrt(V0 / (3 * pi));
+    }
+
+    function h_surf_opt(V0) {
+        return 3 * R_surf_opt(V0);
+    }
+
+    function drawTicks(chartId, xTicks, yTicks, xMin, xMax, yMin, yMax, paddingLeft, paddingBottom, paddingTop, paddingRight) {
+        const chart = document.getElementById(chartId);
+        const rect = chart.getBoundingClientRect();
+        const xScale = (rect.width - paddingLeft - paddingRight) / (xMax - xMin);
+        const yScale = (rect.height - paddingTop - paddingBottom) / (yMax - yMin);
+        
+        const xTickContainer = document.getElementById(`${chartId.split('-')[0]}-x-ticks`);
+        const yTickContainer = document.getElementById(`${chartId.split('-')[0]}-y-ticks`);
+        if (!xTickContainer || !yTickContainer) return;
+        
+        xTickContainer.innerHTML = '';
+        yTickContainer.innerHTML = '';
+        
+        xTicks.forEach(tick => {
+            const x = paddingLeft + (tick - xMin) * xScale;
+            const tickEl = document.createElement('div');
+            tickEl.className = 'tick-label';
+            tickEl.style.left = `${x - 5}px`;
+            tickEl.style.bottom = '15px';
+            tickEl.textContent = tick;
+            xTickContainer.appendChild(tickEl);
+        });
+        
+        yTicks.forEach(tick => {
+            const y = rect.height - paddingBottom - (tick - yMin) * yScale;
+            const tickEl = document.createElement('div');
+            tickEl.className = 'tick-label';
+            tickEl.style.right = `${rect.width - paddingLeft + 5}px`;
+            tickEl.style.top = `${y - 5}px`;
+            tickEl.textContent = tick;
+            yTickContainer.appendChild(tickEl);
+        });
+    }
+
+    function updatePlot(S0) {
+        const Ro = R_opt(S0);
+        const ho = h_opt(S0);
+        const Vo = V(Ro, S0);
+        
+        drawVolumeCurve(S0, Ro, Vo, ho);
+        drawDerivativeCurve(S0, Ro);
+    }
+
+    function updateSurfacePlot(V0) {
+        const Ro = R_surf_opt(V0);
+        const ho = h_surf_opt(V0);
+        const So = S(Ro, V0);
+        
+        drawSurfaceCurve(V0, Ro, So, ho);
+        drawSurfaceDerivativeCurve(V0, Ro);
+    }
+
+    function drawVolumeCurve(S0, Ro, Vo, ho) {
+        const canvas = document.getElementById('volume-curve');
+        const ctx = canvas.getContext('2d');
+        const chart = document.getElementById('volume-chart');
+        const rect = chart.getBoundingClientRect();
+        
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const paddingLeft = 60;
+        const paddingBottom = 20;
+        const paddingTop = 30;
+        const paddingRight = 20;
+        const xMin = 0;
+        const xMax = 12;
+        const yMin = -1500;
+        const yMax = 1200;
+        const xScale = (canvas.width - paddingLeft - paddingRight) / (xMax - xMin);
+        const yScale = (canvas.height - paddingTop - paddingBottom) / (yMax - yMin);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#003366';
+        ctx.lineWidth = 2.5;
+        
+        for (let R = 0.1; R <= xMax; R += 0.05) {
+            const y = V(R, S0);
+            const x = paddingLeft + (R - xMin) * xScale;
+            const yCanvas = canvas.height - paddingBottom - (y - yMin) * yScale;
+            R === 0.1 ? ctx.moveTo(x, yCanvas) : ctx.lineTo(x, yCanvas);
+        }
+        ctx.stroke();
+        
+        const xTicks = [0, 2, 4, 6, 8, 10, 12];
+        const yTicks = [-1500, -1000, -500, 0, 500, 1000];
+        drawTicks('volume-chart', xTicks, yTicks, xMin, xMax, yMin, yMax, paddingLeft, paddingBottom, paddingTop, paddingRight);
+        
+        const point = document.getElementById('volume-point');
+        const vline = document.getElementById('volume-vline');
+        const hline = document.getElementById('volume-hline');
+        const annotation = document.getElementById('volume-annotation');
+        
+        const pointX = paddingLeft + (Ro - xMin) * xScale;
+        const pointY = canvas.height - paddingBottom - (Vo - yMin) * yScale;
+        
+        point.style.left = `${pointX}px`;
+        point.style.top = `${pointY}px`;
+        vline.style.cssText = `left:${pointX}px;top:${paddingTop}px;height:${canvas.height - paddingTop - paddingBottom}px;width:1px`;
+        hline.style.cssText = `top:${pointY}px;left:${paddingLeft}px;width:${canvas.width - paddingLeft - paddingRight}px;height:1px`;
+        
+        const profit = (Vo - (1.5*2*pi*Ro*Ro + 2*pi*Ro*ho)) * 0.1;
+        annotation.innerHTML = `最优R≈${Ro.toFixed(1)}cm<br>最优h≈${ho.toFixed(1)}cm<br>最大V≈${Vo.toFixed(0)}ml<br>利润≈${profit.toFixed(2)}分`;
+        
+        const safeX = Math.min(pointX + 10, canvas.width - 220);
+        annotation.style.left = `${safeX}px`;
+        annotation.style.top = `${pointY - 60}px`;
+    }
+
+    function drawDerivativeCurve(S0, Ro) {
+        const canvas = document.getElementById('derivative-curve');
+        const ctx = canvas.getContext('2d');
+        const chart = document.getElementById('derivative-chart');
+        const rect = chart.getBoundingClientRect();
+        
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const paddingLeft = 60;
+        const paddingBottom = 20;
+        const paddingTop = 30;
+        const paddingRight = 20;
+        const xMin = 0;
+        const xMax = 12;
+        const yMin = -1100;
+        const yMax = 250;
+        const xScale = (canvas.width - paddingLeft - paddingRight) / (xMax - xMin);
+        const yScale = (canvas.height - paddingTop - paddingBottom) / (yMax - yMin);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#333333';
+        ctx.lineWidth = 2.5;
+        
+        for (let R = 0.1; R <= xMax; R += 0.05) {
+            const y = dV(R, S0);
+            const x = paddingLeft + (R - xMin) * xScale;
+            const yCanvas = canvas.height - paddingBottom - (y - yMin) * yScale;
+            R === 0.1 ? ctx.moveTo(x, yCanvas) : ctx.lineTo(x, yCanvas);
+        }
+        ctx.stroke();
+        
+        const xTicks = [0, 2, 4, 6, 8, 10, 12];
+        const yTicks = [-1000, -800, -600, -400, -200, 0, 200];
+        drawTicks('derivative-chart', xTicks, yTicks, xMin, xMax, yMin, yMax, paddingLeft, paddingBottom, paddingTop, paddingRight);
+        
+        const point = document.getElementById('derivative-point');
+        const vline = document.getElementById('derivative-vline');
+        const hline = document.getElementById('derivative-hline');
+        const annotation = document.getElementById('derivative-annotation');
+        
+        const pointX = paddingLeft + (Ro - xMin) * xScale;
+        const pointY = canvas.height - paddingBottom - (0 - yMin) * yScale;
+        
+        point.style.left = `${pointX}px`;
+        point.style.top = `${pointY}px`;
+        vline.style.cssText = `left:${pointX}px;top:${paddingTop}px;height:${canvas.height - paddingTop - paddingBottom}px;width:1px`;
+        hline.style.cssText = `top:${pointY}px;left:${paddingLeft}px;width:${canvas.width - paddingLeft - paddingRight}px;height:1px`;
+        
+        annotation.innerHTML = `V'(R)=0<br>利润最大化<br>极值点 R≈${Ro.toFixed(2)}`;
+        const safeX = Math.min(pointX + 10, canvas.width - 180);
+        annotation.style.left = `${safeX}px`;
+        annotation.style.top = `${pointY - 50}px`;
+    }
+
+    function drawSurfaceCurve(V0, Ro, So, ho) {
+        const canvas = document.getElementById('surface-curve');
+        const ctx = canvas.getContext('2d');
+        const chart = document.getElementById('surface-chart');
+        const rect = chart.getBoundingClientRect();
+        
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const paddingLeft = 60;
+        const paddingBottom = 20;
+        const paddingTop = 30;
+        const paddingRight = 20;
+        const xMin = 0;
+        const xMax = 10;
+        const yMin = 0;
+        const yMax = 1000;
+        const xScale = (canvas.width - paddingLeft - paddingRight) / (xMax - xMin);
+        const yScale = (canvas.height - paddingTop - paddingBottom) / (yMax - yMin);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#003366';
+        ctx.lineWidth = 2.5;
+        
+        for (let R = 0.5; R <= xMax; R += 0.05) {
+            const y = S(R, V0);
+            const x = paddingLeft + (R - xMin) * xScale;
+            const yCanvas = canvas.height - paddingBottom - (y - yMin) * yScale;
+            R === 0.5 ? ctx.moveTo(x, yCanvas) : ctx.lineTo(x, yCanvas);
+        }
+        ctx.stroke();
+        
+        const xTicks = [0, 2, 4, 6, 8, 10];
+        const yTicks = [0, 200, 400, 600, 800, 1000];
+        drawTicks('surface-chart', xTicks, yTicks, xMin, xMax, yMin, yMax, paddingLeft, paddingBottom, paddingTop, paddingRight);
+        
+        const point = document.getElementById('surface-point');
+        const vline = document.getElementById('surface-vline');
+        const hline = document.getElementById('surface-hline');
+        const annotation = document.getElementById('surface-annotation');
+        
+        const pointX = paddingLeft + (Ro - xMin) * xScale;
+        const pointY = canvas.height - paddingBottom - (So - yMin) * yScale;
+        
+        point.style.left = `${pointX}px`;
+        point.style.top = `${pointY}px`;
+        vline.style.cssText = `left:${pointX}px;top:${paddingTop}px;height:${canvas.height - paddingTop - paddingBottom}px;width:1px`;
+        hline.style.cssText = `top:${pointY}px;left:${paddingLeft}px;width:${canvas.width - paddingLeft - paddingRight}px;height:1px`;
+        
+        const profit = (V0 - So) * 0.1;
+        annotation.innerHTML = `最优R≈${Ro.toFixed(1)}cm<br>最优h≈${ho.toFixed(1)}cm<br>最小S≈${So.toFixed(0)}cm²<br>利润≈${profit.toFixed(2)}分`;
+        const safeX = Math.min(pointX + 10, canvas.width - 220);
+        annotation.style.left = `${safeX}px`;
+        annotation.style.top = `${pointY - 60}px`;
+    }
+
+    function drawSurfaceDerivativeCurve(V0, Ro) {
+        const canvas = document.getElementById('surface-derivative-curve');
+        const ctx = canvas.getContext('2d');
+        const chart = document.getElementById('surface-derivative-chart');
+        const rect = chart.getBoundingClientRect();
+        
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const paddingLeft = 60;
+        const paddingBottom = 20;
+        const paddingTop = 30;
+        const paddingRight = 20;
+        const xMin = 0;
+        const xMax = 10;
+        const yMin = -500;
+        const yMax = 500;
+        const xScale = (canvas.width - paddingLeft - paddingRight) / (xMax - xMin);
+        const yScale = (canvas.height - paddingTop - paddingBottom) / (yMax - yMin);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#333333';
+        ctx.lineWidth = 2.5;
+        
+        for (let R = 0.5; R <= xMax; R += 0.05) {
+            const y = dS(R, V0);
+            const x = paddingLeft + (R - xMin) * xScale;
+            const yCanvas = canvas.height - paddingBottom - (y - yMin) * yScale;
+            R === 0.5 ? ctx.moveTo(x, yCanvas) : ctx.lineTo(x, yCanvas);
+        }
+        ctx.stroke();
+        
+        const xTicks = [0, 2, 4, 6, 8, 10];
+        const yTicks = [-400, -200, 0, 200, 400];
+        drawTicks('surface-derivative-chart', xTicks, yTicks, xMin, xMax, yMin, yMax, paddingLeft, paddingBottom, paddingTop, paddingRight);
+        
+        const point = document.getElementById('surface-derivative-point');
+        const vline = document.getElementById('surface-derivative-vline');
+        const hline = document.getElementById('surface-derivative-hline');
+        const annotation = document.getElementById('surface-derivative-annotation');
+        
+        const pointX = paddingLeft + (Ro - xMin) * xScale;
+        const pointY = canvas.height - paddingBottom - (0 - yMin) * yScale;
+        
+        point.style.left = `${pointX}px`;
+        point.style.top = `${pointY}px`;
+        vline.style.cssText = `left:${pointX}px;top:${paddingTop}px;height:${canvas.height - paddingTop - paddingBottom}px;width:1px`;
+        hline.style.cssText = `top:${pointY}px;left:${paddingLeft}px;width:${canvas.width - paddingLeft - paddingRight}px;height:1px`;
+        
+        annotation.innerHTML = `S'(R)=0<br>成本最低（利润最大）<br>极值点 R≈${Ro.toFixed(2)}`;
+        const safeX = Math.min(pointX + 10, canvas.width - 180);
+        annotation.style.left = `${safeX}px`;
+        annotation.style.top = `${pointY - 50}px`;
+    }
+
+    // 初始化
+    window.onload = function() {
+        // 公式渲染
+        renderFormulas();
+        
+        // 滑块绑定
+        const sliderMap = {
+            'thickness-ratio': 'thickness-ratio-val',
+            'bottom-arch': 'bottom-arch-val',
+            'ring-size': 'ring-size-val',
+            'fixed-volume': 'fixed-volume-val',
+            'cost-weight': 'cost-weight-val',
+            'transport-safety': 'transport-safety-val'
+        };
+        for (const [sliderId, displayId] of Object.entries(sliderMap)) {
+            const slider = document.getElementById(sliderId);
+            const display = document.getElementById(displayId);
+            slider.addEventListener('input', () => display.textContent = slider.value);
+        }
+
+        // 折叠面板
+        const toggleBtn = document.getElementById('toggleDetailBtn');
+        const detailProcess = document.getElementById('detailProcess');
+        toggleBtn.addEventListener('click', () => {
+            const isHidden = detailProcess.style.display === 'none';
+            detailProcess.style.display = isHidden ? 'block' : 'none';
+            toggleBtn.textContent = isHidden ? '隐藏详细过程' : '显示详细过程';
+        });
+
+        // 初始化图表
+        updatePlot(600);
+        updateSurfacePlot(330);
+    };
+
+    // 渲染公式
+    function renderFormulas() {
+        katex.render("V = \\pi R^2 h", document.getElementById("formula1"));
+        katex.render("S = 2\\pi R^2 + 2\\pi Rh", document.getElementById("formula2"));
+        katex.render("S_{加权} = 3\\pi R^2 + 2\\pi Rh", document.getElementById("formula3"));
+        katex.render("利润 = (V - S_{加权}) \\times 0.1", document.getElementById("formula4"));
+    }
+
+    // 切换答案
+    function toggleAnswer(num) {
+        const ans = document.getElementById(`answer${num}`);
+        ans.style.display = ans.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // 重置参数
+    function resetAllParams() {
+        document.getElementById('thickness-ratio').value = 1.5;
+        document.getElementById('bottom-arch').value = 5;
+        document.getElementById('ring-size').value = 120;
+        document.getElementById('fixed-volume').value = 330;
+        document.getElementById('cost-weight').value = 0.7;
+        document.getElementById('transport-safety').value = 0.15;
+        
+        document.getElementById('thickness-ratio-val').textContent = 1.5;
+        document.getElementById('bottom-arch-val').textContent = 5;
+        document.getElementById('ring-size-val').textContent = 120;
+        document.getElementById('fixed-volume-val').textContent = 330;
+        document.getElementById('cost-weight-val').textContent = 0.7;
+        document.getElementById('transport-safety-val').textContent = 0.15;
+        
+        document.getElementById('opt-thickness').checked = true;
+        document.getElementById('opt-bottom').checked = true;
+        document.getElementById('opt-ring').checked = true;
+        document.getElementById('opt-volume').checked = true;
+        document.getElementById('opt-cost').checked = true;
+        document.getElementById('opt-transport').checked = true;
+    }
+
+    // 优化计算
+    function calculateOptimalDesign() {
+        const thicknessRatio = parseFloat(document.getElementById('thickness-ratio').value);
+        const bottomArch = parseFloat(document.getElementById('bottom-arch').value);
+        const ringSize = parseFloat(document.getElementById('ring-size').value);
+        const fixedVolume = parseFloat(document.getElementById('fixed-volume').value);
+        const costWeight = parseFloat(document.getElementById('cost-weight').value);
+        const transportSafety = parseFloat(document.getElementById('transport-safety').value);
+        
+        const considerThickness = document.getElementById('opt-thickness').checked;
+        const considerBottom = document.getElementById('opt-bottom').checked;
+        const considerRing = document.getElementById('opt-ring').checked;
+        const considerVolume = document.getElementById('opt-volume').checked;
+        const considerCost = document.getElementById('opt-cost').checked;
+        const considerTransport = document.getElementById('opt-transport').checked;
+        
+        let baseRatio = 3.0;
+        if (considerThickness) baseRatio -= (thicknessRatio - 1.5) * 0.08;
+        if (considerBottom) baseRatio -= bottomArch * 0.02;
+        if (considerRing) baseRatio -= (ringSize - 100) * 0.001;
+        if (considerTransport) baseRatio += transportSafety * 1.5;
+        if (considerCost) baseRatio *= (1 - costWeight * 0.1);
+        baseRatio = Math.max(2.5, Math.min(3.5, baseRatio));
+        
+        const materialUsage = (fixedVolume / 100) * (1 + transportSafety) * thicknessRatio * 0.8;
+        const cost = materialUsage * (1 + costWeight) * 0.5;
+        const strengthScore = Math.min(10, 8 + (thicknessRatio - 1.5) * 0.8 + transportSafety * 10);
+        
+        const R = Math.cbrt(fixedVolume / (baseRatio * Math.PI));
+        const h = baseRatio * R;
+        const S_weighted = thicknessRatio * 2 * Math.PI * R * R + 1 * 2 * Math.PI * R * h;
+        const profit = (fixedVolume - S_weighted) * 0.1;
+        
+        let suggestion = "基于所选参数（成本比1:1.5），推荐以下优化方案：";
+        if (costWeight > 0.8) suggestion += "<br>- 优先降低顶底厚度比至1.5，最大化利润；";
+        if (transportSafety > 0.2) suggestion += "<br>- 适当增加高径比，提升运输稳定性；";
+        if (bottomArch > 7) suggestion += "<br>- 底部拱形高度偏大，建议适当降低以节省材料；";
+        if (baseRatio < 2.8) suggestion += "<br>- 高径比偏小，偏离最优3:1，建议优化拉环设计以提升利润。";
+        
+        document.getElementById('result-content').innerHTML = 
+            `• 优化后高径比：${baseRatio.toFixed(2)}（理论最优3:1）<br>
+            • 预估材料使用量：${materialUsage.toFixed(2)} g<br>
+            • 预估生产成本：¥${cost.toFixed(2)} / 罐<br>
+            • 预估单罐利润：${profit.toFixed(2)} 分<br>
+            • 结构强度评分：${strengthScore.toFixed(1)} / 10<br>
+            • 综合优化建议：${suggestion}`;
+        
+        document.getElementById('opt-result').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
